@@ -24,3 +24,8 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 - **App Component** (`app.component.html`):
   - Contains `<app-header>` component
   - Contains `<router-outlet>` for displaying routed components
+
+### Commands used
+
+`ng generate component <component>`
+`ng serve`
