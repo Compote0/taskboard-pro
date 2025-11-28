@@ -1,8 +1,16 @@
-<nav>
-  <h1>Taskboard Pro</h1>
-  <div class="nav-links">
-    <a routerLink="/home" routerLinkActive="active">Home</a>
-    <a routerLink="/tasks" routerLinkActive="active">Tasks</a>
-    <a routerLink="/about" routerLinkActive="active">About</a>
-  </div>
-</nav>
+<header class="header" [class.scrolled]="isScrolled">
+  <h1 class="logo">Taskboard Pro</h1>
+  <nav class="nav">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/tasks" routerLinkActive="active" class="nav-link">Tasks</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/about" routerLinkActive="active" class="nav-link">About</a>
+      </li>
+    </ul>
+  </nav>
+</header>

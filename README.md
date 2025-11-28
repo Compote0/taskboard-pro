@@ -72,3 +72,33 @@ Template (affichage automatique)
 - **Le pipe `| async` gère l'abonnement et le désabonnement automatiquement** : Plus besoin de gérer manuellement les subscriptions
 - **Le flux reste cohérent** : Le service et la vue sont toujours synchronisés grâce au BehaviorSubject
 - **Mise à jour automatique** : La vue se réactualise sans rechargement quand les données changent
+
+### Sequence 3 - Lazy Loading (Chargement Paresseux)
+
+Au lieu d'importer directement un composant dans les routes :
+
+```typescript
+import { AboutComponent } from './about/about.component';
+{ path: 'about', component: AboutComponent }
+```
+
+On utilise `loadComponent` avec une fonction d'import dynamique :
+
+```typescript
+{
+  path: 'about',
+  loadComponent: () =>
+    import('./about/about.component').then((m) => m.AboutComponent),
+}
+```
+
+#### Avantages
+
+- **Bundle initial plus léger** : Seuls les composants nécessaires sont chargés au démarrage
+- **Performance améliorée** : Temps de chargement initial réduit
+- **Chargement à la demande** : Les composants sont chargés uniquement quand l'utilisateur navigue vers la route
+
+#### Routes avec Lazy Loading
+
+- **`/about`** : Charge `AboutComponent` en lazy loading
+- **`/tasks`** : Charge `TasksPageComponent` en lazy loading avec routes enfants

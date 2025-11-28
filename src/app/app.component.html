@@ -1,2 +1,16 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
+<div *ngIf="isLoading" class="loading-screen" [class.fade-out]="fadeOut">
+  <div class="loading-content">
+    <div class="progress-bar-container">
+      <div class="progress-bar" [style.width.%]="progress"></div>
+    </div>
+    <h1 class="loading-title">Taskboard Pro</h1>
+  </div>
+</div>
+
+<div *ngIf="!isLoading" class="app-content animate-blocks">
+  <app-header></app-header>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+  <app-footer></app-footer>
+</div>
