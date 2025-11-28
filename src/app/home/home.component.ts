@@ -6,12 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
-  count = 0;
-  ngOnInit(): void {
-    setInterval(() => {
-      this.count++;
-      console.log('count ++');
-    }, 500);
-  }
-}
+export class HomeComponent {}

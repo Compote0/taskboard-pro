@@ -1,31 +1,116 @@
 <div class="tasks-container">
-  <h2>Tasks</h2>
-
-  <div *ngIf="loading" class="loading">Loading tasks...</div>
-
-  <div *ngIf="!loading && tasks.length === 0" class="no-tasks">
-    No tasks found.
+  <div class="header-section">
+    <h2>Tasks</h2>
+    <button (click)="toggleForm()" class="add-task-btn">
+      {{ showForm ? "Cancel" : "+ Add Task" }}
+    </button>
   </div>
 
-  <div *ngIf="!loading && tasks.length > 0" class="tasks-list">
-    <div
-      *ngFor="let task of tasks"
-      class="task-card"
-      [class]="'priority-' + task.priority"
-    >
-      <div class="task-header">
-        <h3>{{ task.title }}</h3>
-        <span class="status" [class]="'status-' + task.status">{{
-          task.status
-        }}</span>
-      </div>
-      <p class="task-description">{{ task.description }}</p>
-      <div class="task-footer">
-        <span class="priority" [class]="'priority-' + task.priority"
-          >Priority: {{ task.priority }}</span
+  <div *ngIf="showForm" class="task-form-container">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+      <div class="form-group">
+        <label for="title">Title *</label>
+        <input
+          type="text"
+          id="title"
+          formControlName="title"
+          class="form-control"
+          placeholder="Enter task title"
+        />
+        <div
+          *ngIf="
+            taskForm.get('title')?.invalid && taskForm.get('title')?.touched
+          "
+          class="error-message"
         >
-        <span class="task-id">#{{ task.id }}</span>
+          Title is required and must be at least 3 characters
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="form-control"
+          rows="3"
+          placeholder="Enter task description"
+        ></textarea>
+        <div
+          *ngIf="
+            taskForm.get('description')?.invalid &&
+            taskForm.get('description')?.touched
+          "
+          class="error-message"
+        >
+          Description is required
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="status">Status *</label>
+          <select id="status" formControlName="status" class="form-control">
+            <option value="todo">Todo</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="priority">Priority *</label>
+          <select id="priority" formControlName="priority" class="form-control">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="taskForm.invalid" class="submit-btn">
+          Add Task
+        </button>
+        <button type="button" (click)="toggleForm()" class="cancel-btn">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <ng-container *ngIf="tasks$ | async as tasks">
+    <div *ngIf="tasks.length === 0" class="no-tasks">No tasks found.</div>
+
+    <div *ngIf="tasks.length > 0" class="tasks-list">
+      <div
+        *ngFor="let task of tasks"
+        class="task-card"
+        [class]="'priority-' + task.priority"
+      >
+        <div class="task-header">
+          <h3>{{ task.title }}</h3>
+          <span class="status" [class]="'status-' + task.status">{{
+            task.status
+          }}</span>
+        </div>
+        <p class="task-description">{{ task.description }}</p>
+        <div class="task-footer">
+          <span class="priority" [class]="'priority-' + task.priority"
+            >Priority: {{ task.priority }}</span
+          >
+          <div class="task-actions">
+            <span class="task-id">#{{ task.id }}</span>
+            <button
+              (click)="removeTask(task.id)"
+              class="delete-btn"
+              type="button"
+              title="Delete task"
+            >
+              ×
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>
