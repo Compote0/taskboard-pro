@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TaskService } from '../services/task.service';
+import { ConfettiService } from '../services/confetti.service';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -19,7 +20,11 @@ export class TaskComponent {
   taskForm: FormGroup;
   showForm = false;
 
-  constructor(private taskService: TaskService, private fb: FormBuilder) {
+  constructor(
+    private taskService: TaskService,
+    private fb: FormBuilder,
+    private confettiService: ConfettiService
+  ) {
     this.tasks$ = this.taskService.tasks$;
     this.taskForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -48,10 +53,12 @@ export class TaskComponent {
         priority: 'medium',
       });
       this.showForm = false;
+      this.confettiService.triggerConfetti();
     }
   }
 
   removeTask(id: number): void {
     this.taskService.removeTask(id);
+    this.confettiService.triggerConfetti();
   }
 }

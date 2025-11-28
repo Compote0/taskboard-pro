@@ -1,11 +1,26 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
-import { TaskComponent } from './task/task.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'tasks', component: TaskComponent },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./about/about.component').then((m) => m.AboutComponent),
+  },
+  {
+    path: 'tasks',
+    loadComponent: () =>
+      import('./features/tasks/tasks-page/tasks-page.component').then(
+        (m) => m.TasksPageComponent
+      ),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./task/task.component').then((m) => m.TaskComponent),
+      },
+    ],
+  },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
