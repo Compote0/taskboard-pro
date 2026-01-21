@@ -1,4 +1,5 @@
 <div class="tasks-container">
+  <app-task-stats></app-task-stats>
   <div class="header-section">
     <h2>Tasks</h2>
     <button (click)="toggleForm()" class="add-task-btn">
@@ -78,27 +79,72 @@
     </form>
   </div>
 
-  <ng-container *ngIf="tasks$ | async as tasks">
+  <ng-container>
     <div *ngIf="tasks.length === 0" class="no-tasks">No tasks found.</div>
 
     <div *ngIf="tasks.length > 0" class="tasks-list">
       <div
-        *ngFor="let task of tasks"
+        *ngFor="let task of tasks; trackBy: trackByTaskId"
         class="task-card"
         [class]="'priority-' + task.priority"
+        [class.pinned]="task.pinned"
+        [@taskAnimation]="task.pinned ? 'pinned' : 'normal'"
       >
         <div class="task-header">
-          <h3>{{ task.title }}</h3>
+          <div class="task-title-wrapper">
+            <button
+              *ngIf="task.pinned"
+              class="pin-indicator"
+              type="button"
+              title="Tâche épinglée"
+            >
+              <lucide-icon [name]="Pin" [size]="16"></lucide-icon>
+            </button>
+            <h3
+              [style.text-decoration]="task.completed ? 'line-through' : 'none'"
+              [style.color]="task.completed ? '#999' : '#5a4a3a'"
+            >
+              {{ task.title }}
+            </h3>
+          </div>
           <span class="status" [class]="'status-' + task.status">{{
             task.status
           }}</span>
         </div>
-        <p class="task-description">{{ task.description }}</p>
+        <p
+          class="task-description"
+          [style.text-decoration]="task.completed ? 'line-through' : 'none'"
+          [style.color]="task.completed ? '#999' : '#6b5d4a'"
+        >
+          {{ task.description }}
+        </p>
         <div class="task-footer">
           <span class="priority" [class]="'priority-' + task.priority"
             >Priority: {{ task.priority }}</span
           >
           <div class="task-actions">
+            <button
+              (click)="pinTask(task.id)"
+              class="pin-btn"
+              type="button"
+              [title]="task.pinned ? 'Désépingler' : 'Épingler'"
+            >
+              <lucide-icon
+                [name]="task.pinned ? PinOff : Pin"
+                [size]="18"
+              ></lucide-icon>
+            </button>
+            <button
+              (click)="toggleTask(task.id)"
+              class="toggle-btn"
+              type="button"
+              [title]="task.completed ? 'Réactiver' : 'Terminer'"
+            >
+              <lucide-icon
+                [name]="task.completed ? RotateCcw : Check"
+                [size]="18"
+              ></lucide-icon>
+            </button>
             <span class="task-id">#{{ task.id }}</span>
             <button
               (click)="removeTask(task.id)"
@@ -106,7 +152,7 @@
               type="button"
               title="Delete task"
             >
-              ×
+              <lucide-icon [name]="Trash2" [size]="18"></lucide-icon>
             </button>
           </div>
         </div>
