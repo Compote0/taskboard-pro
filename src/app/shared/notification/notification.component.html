@@ -1,0 +1,5 @@
+@if (notification$ | async; as notif) {
+  <div class="notification" [class]="notif.type">
+    {{ notif.message }}
+  </div>
+}

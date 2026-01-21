@@ -102,3 +102,50 @@ On utilise `loadComponent` avec une fonction d'import dynamique :
 
 - **`/about`** : Charge `AboutComponent` en lazy loading
 - **`/tasks`** : Charge `TasksPageComponent` en lazy loading avec routes enfants
+
+### Lighthouse - Audit de Performance
+
+Lighthouse est intégré au projet pour analyser les performances, l'accessibilité, les bonnes pratiques et le SEO de l'application.
+
+#### Installation
+
+Lighthouse est déjà installé comme dépendance de développement.
+
+#### Utilisation
+
+1. **Démarrer l'application** :
+
+   ```bash
+   npm start
+   ```
+
+2. **Lancer un audit Lighthouse** (dans un autre terminal) :
+
+   ```bash
+   # Rapport HTML
+   npm run lighthouse
+
+   # Rapport JSON
+   npm run lighthouse:json
+
+   # Les deux formats
+   npm run lighthouse:all
+   ```
+
+3. **Consulter les rapports** :
+   - Le rapport HTML sera généré dans `lighthouse-report.html`
+   - Le rapport JSON sera généré dans `lighthouse-report.json`
+
+#### Configuration
+
+Le fichier `.lighthouserc.json` contient la configuration pour les audits CI/CD avec des seuils minimum :
+
+- Performance : 80%
+- Accessibilité : 90%
+- Bonnes pratiques : 80%
+- SEO : 80%
+
+#### Notes
+
+- Assurez-vous que l'application tourne sur `http://localhost:4200` avant de lancer Lighthouse
+- Les rapports sont automatiquement ignorés par Git (voir `.gitignore`)
